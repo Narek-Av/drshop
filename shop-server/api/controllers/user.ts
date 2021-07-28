@@ -24,8 +24,8 @@ export const signin = async (req: Request, res: Response) => {
 
     const token = jwt.sign(
       { email: existingUser.email, id: existingUser._id },
-      "superstrong",
-      { expiresIn: "2h" }
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRE }
     );
 
     res.status(200).json({ result: existingUser, token });
@@ -35,12 +35,35 @@ export const signin = async (req: Request, res: Response) => {
 };
 
 export const signup = async (req: Request, res: Response) => {
-  const { email, password, confirmPassword, name } = req.body;
+  const { email, password, confirmPassword, username } = req.body;
+
+  if (!username || typeof username !== "string") {
+    return res.json({ status: "error", error: "Invalid username" });
+  }
+
+  if (
+    !/^[\-0-9a-zA-Z\.\+_]+@[\-0-9a-zA-Z\.\+_]+\.[a-zA-Z]{2,}$/.test(
+      String(email)
+    )
+  ) {
+    return res.json({ status: "error", error: "Email is not valid." });
+  }
+
+  if (!password || typeof password !== "string") {
+    return res.json({ status: "error", error: "Invalid password" });
+  }
+
+  if (password.length < 6) {
+    return res.json({
+      status: "error",
+      error: "Password to small. Should be lateset 6 characters",
+    });
+  }
 
   try {
     const exitstingUser = await User.findOne({ email });
     if (exitstingUser) {
-      return res.status(400).json({ message: "User doesn't exist." });
+      return res.status(409).json({ message: "User doesn't exist." });
     }
 
     if (password !== confirmPassword) {
@@ -49,12 +72,16 @@ export const signup = async (req: Request, res: Response) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    const result = await User.create({ email, password: hashedPassword, name });
+    const result = await User.create({
+      email,
+      password: hashedPassword,
+      username,
+    });
 
     const token = jwt.sign(
       { email: result.email, id: result._id },
-      "superstron",
-      { expiresIn: "2h" }
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRE }
     );
 
     res.status(200).json({ result, token });

@@ -1,5 +1,11 @@
 import axios from "axios";
 
-axios.interceptors.request.use();
+const api = axios.create({
+  baseURL: "http://localhost:5000",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+});
 
-export default axios;
+export default api;

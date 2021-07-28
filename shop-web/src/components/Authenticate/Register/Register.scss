@@ -1,0 +1,34 @@
+@import "../../../assets/styles/variables";
+
+.register {
+  margin: 1em auto;
+  width: clamp(320px, 40%, 480px);
+  padding: 0.7em 1.2em;
+  box-shadow: $box-shadow;
+  border-radius: $brd-radius;
+
+  &-title {
+    margin-bottom: 1.2em;
+  }
+  &-form {
+    .form-group {
+      margin-bottom: 1em;
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 17px;
+      }
+    }
+    .form-btns {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1.2em;
+    }
+    .error {
+      margin-top: 5px;
+      margin-left: 3px;
+      color: red;
+      display: block;
+    }
+  }
+}

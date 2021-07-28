@@ -1,16 +1,23 @@
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { login } from "../../../store/auth/authSlice";
 import "./Login.scss";
 
+type Inputs = {
+  email: string;
+  password: string;
+};
+
 export default function Login() {
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm();
-  const onSubmit = (data: any) => console.log(data);
-
-  console.log(watch("example"));
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) =>
+    dispatch(login(data.email, data.password));
 
   return (
     <div className="login">
@@ -18,13 +25,37 @@ export default function Login() {
       <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="email">Eamil</label>
-          <input {...register("email", { required: true })} />
-          {errors.email && <span>This field is required</span>}
+          <input
+            id="email"
+            type="email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Entered value does not match email format",
+              },
+            })}
+          />
+          {errors.email && (
+            <span className="error">{errors.email.message}</span>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input {...register("password", { required: true })} />
-          {errors.password && <span>This field is required</span>}
+          <input
+            id="password"
+            type="password"
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 4,
+                message: "min length is 4",
+              },
+            })}
+          />
+          {errors.password && (
+            <span className="error">{errors.password.message}</span>
+          )}
         </div>
         <div className="form-btns">
           <button className="btn btn-primary" type="submit">

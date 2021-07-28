@@ -1,59 +1,91 @@
-import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { signup } from "../../../store/auth/authSlice";
+
 import "./Register.scss";
 
-export default function Register() {
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
-  const [email, setEmail] = useState("");
+type Inputs = {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
-  const onLoginHandle = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(`username`, username);
-    console.log(`password`, password);
-    console.log(`password2`, password2);
-    console.log(`email`, email);
-  };
+export default function Register() {
+  const dispatch = useDispatch();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => dispatch(signup(data));
 
   return (
-    <div className="login">
-      <h2 className="login-title">Register</h2>
-      <form className="login-form" onSubmit={onLoginHandle}>
+    <div className="register">
+      <h2 className="register-title">Register</h2>
+      <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
-          <label htmlFor="username">User name</label>
+          <label htmlFor="username">Username</label>
           <input
             id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUserName(e.target.value)}
+            type="username"
+            {...register("username", {
+              required: true,
+            })}
           />
+          {errors.username && (
+            <span className="error">Username is required</span>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="email">Eamil</label>
           <input
             id="email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Entered value does not match email format",
+              },
+            })}
           />
+          {errors.email && (
+            <span className="error">{errors.email.message}</span>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
             id="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 5,
+                message: "min length is 6",
+              },
+            })}
           />
+          {errors.password && (
+            <span className="error">{errors.password.message}</span>
+          )}
         </div>
         <div className="form-group">
-          <label htmlFor="password2">Confirm Password</label>
+          <label htmlFor="confirmPassword">Confirm Password</label>
           <input
-            id="password2"
+            id="confirmPassword"
             type="password"
-            value={password2}
-            onChange={(e) => setPassword2(e.target.value)}
+            {...register("confirmPassword", {
+              required: "Confirm Password is required",
+              validate: (value) => value === watch("password"),
+            })}
           />
+          {errors.confirmPassword && (
+            <span className="error">The passwords do not match</span>
+          )}
         </div>
         <div className="form-btns">
           <button className="btn btn-primary" type="submit">

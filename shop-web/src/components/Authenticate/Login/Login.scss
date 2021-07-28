@@ -12,15 +12,23 @@
   }
   &-form {
     .form-group {
-      margin-bottom: 0.7em;
+      margin-bottom: 1em;
       label {
-        margin-bottom: 0.4em;
+        display: block;
+        margin-bottom: 5px;
+        font-size: 17px;
       }
     }
     .form-btns {
       display: flex;
       justify-content: flex-end;
       margin-top: 1.2em;
+    }
+    .error {
+      margin-top: 5px;
+      margin-left: 3px;
+      color: red;
+      display: block;
     }
   }
 }
