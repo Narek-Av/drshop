@@ -1,0 +1,26 @@
+@import "../../../assets/styles/variables";
+
+.login {
+  margin: 1em auto;
+  width: clamp(320px, 40%, 480px);
+  padding: 0.7em 1.2em;
+  box-shadow: $box-shadow;
+  border-radius: $brd-radius;
+
+  &-title {
+    margin-bottom: 1.2em;
+  }
+  &-form {
+    .form-group {
+      margin-bottom: 0.7em;
+      label {
+        margin-bottom: 0.4em;
+      }
+    }
+    .form-btns {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1.2em;
+    }
+  }
+}
