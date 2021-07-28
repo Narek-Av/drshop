@@ -38,19 +38,20 @@ export const signup = async (req: Request, res: Response) => {
   const { email, password, confirmPassword, username } = req.body;
 
   if (!username || typeof username !== "string") {
-    return res.json({ status: "error", error: "Invalid username" });
+    return res.status(400).json({ message: "Invalid username" });
   }
 
+  // Email validation regexp
   if (
     !/^[\-0-9a-zA-Z\.\+_]+@[\-0-9a-zA-Z\.\+_]+\.[a-zA-Z]{2,}$/.test(
       String(email)
     )
   ) {
-    return res.json({ status: "error", error: "Email is not valid." });
+    return res.status(400).json({ message: "Email is not valid." });
   }
 
   if (!password || typeof password !== "string") {
-    return res.json({ status: "error", error: "Invalid password" });
+    return res.status(400).json({ message: "Invalid password" });
   }
 
   if (password.length < 6) {

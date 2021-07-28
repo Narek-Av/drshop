@@ -1,5 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+// import { RootState } from "../../../store";
 import { signup } from "../../../store/auth/authSlice";
 
 import "./Register.scss";
@@ -11,7 +12,8 @@ type Inputs = {
   confirmPassword: string;
 };
 
-export default function Register() {
+const Register: React.FC = () => {
+  // const {isLoading, isAuth, error} = useSelector<RootState>(state => state.auth);
   const dispatch = useDispatch();
 
   const {
@@ -20,11 +22,12 @@ export default function Register() {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => dispatch(signup(data));
+  const onSubmit: SubmitHandler<Inputs> = data => dispatch(signup(data));
 
   return (
     <div className="register">
       <h2 className="register-title">Register</h2>
+      {/* {error && <span>{error}</span>} */}
       <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="username">Username</label>
@@ -80,7 +83,7 @@ export default function Register() {
             type="password"
             {...register("confirmPassword", {
               required: "Confirm Password is required",
-              validate: (value) => value === watch("password"),
+              validate: value => value === watch("password"),
             })}
           />
           {errors.confirmPassword && (
@@ -95,4 +98,6 @@ export default function Register() {
       </form>
     </div>
   );
-}
+};
+
+export default Register;

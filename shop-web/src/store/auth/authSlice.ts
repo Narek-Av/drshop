@@ -20,7 +20,7 @@ const loginSlice = createSlice({
   name: "login",
   initialState,
   reducers: {
-    loginPending: (state) => {
+    loginPending: state => {
       state.isLoading = true;
     },
     loginSuccess: (state, action) => {
