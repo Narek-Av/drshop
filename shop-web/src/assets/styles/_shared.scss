@@ -39,3 +39,16 @@ textarea {
   outline: none;
   padding: 0.6em 0.8em;
 }
+
+.alert {
+  position: absolute;
+  display: block;
+  padding: 6px 12px;
+  background-color: #fff;
+  box-shadow: $box-shadow;
+  color: red;
+  top: 1em;
+  right: 1em;
+  z-index: 10;
+  border-radius: $brd-radius;
+}

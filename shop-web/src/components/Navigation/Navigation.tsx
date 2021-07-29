@@ -5,8 +5,17 @@ import logo from "../../assets/img/shop-logo.png";
 import { ReactComponent as SearchIcon } from "../../assets/icons/loupe.svg";
 
 import "./Navigation.scss";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 const Navigation: React.FC = () => {
+  const { userData } = useSelector((state: RootState) => {
+    const {
+      auth: { userData },
+    } = state;
+    return { userData };
+  });
+
   return (
     <div className="navigation">
       <div className="navigation-content">
@@ -22,12 +31,20 @@ const Navigation: React.FC = () => {
           </div>
         </div>
         <div className="navigation-content-right">
-          <Link to="/login" className="btn btn-outline nav-item">
-            Login
-          </Link>
-          <Link to="/signup" className="btn btn-primary">
-            Sign up
-          </Link>
+          {userData ? (
+            <>
+              <Link to="/login">Logout</Link>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="btn btn-outline nav-item">
+                Login
+              </Link>
+              <Link to="/signup" className="btn btn-primary">
+                Sign up
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>

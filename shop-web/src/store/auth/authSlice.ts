@@ -16,37 +16,48 @@ const initialState: LoginState = {
   error: "",
 };
 
-const loginSlice = createSlice({
+const authSlice = createSlice({
   name: "login",
   initialState,
   reducers: {
     loginPending: state => {
       state.isLoading = true;
+      state.error = "";
     },
     loginSuccess: (state, action) => {
       state.isLoading = false;
       state.isAuth = true;
       state.userData = action.payload;
     },
-    loginFail: (state, action: PayloadAction<string>) => {
+    loginFail: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },
   },
 });
 
+const { reducer, actions } = authSlice;
+
+export const { loginPending, loginSuccess, loginFail } = actions;
+
 export const login =
   (email: string, password: string) => async (dispatch: AppDispatch) => {
     dispatch(loginPending());
 
     try {
-      const data = api.post("/user/login", {
+      const res = await api.post("/user/login", {
         email,
         password,
       });
+      dispatch(loginSuccess(res.data.result));
+      localStorage.setItem("token", res.data.token);
+    } catch (error) {
+      dispatch(loginFail(error.response.data.message));
 
-      console.log(`data`, data);
-    } catch (error) {}
+      setTimeout(() => {
+        dispatch(loginFail(""));
+      }, 3000);
+    }
   };
 
 export const signup =
@@ -61,21 +72,20 @@ export const signup =
     const { username, email, password, confirmPassword } = data;
 
     try {
-      const data = await api.post("/user", {
+      const res = await api.post("/user", {
         username,
         email,
         password,
         confirmPassword,
       });
-      console.log(`data`, data);
-      loginSuccess(data);
+      dispatch(loginSuccess(res.data.result));
+      localStorage.setItem("token", res.data.token);
     } catch (error) {
-      loginFail(error.response.data.message);
+      dispatch(loginFail(error.response.data.message));
+      setTimeout(() => {
+        dispatch(loginFail(""));
+      }, 3000);
     }
   };
-
-const { reducer, actions } = loginSlice;
-
-export const { loginPending, loginSuccess, loginFail } = actions;
 
 export default reducer;

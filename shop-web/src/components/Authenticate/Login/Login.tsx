@@ -1,6 +1,10 @@
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { RootState } from "../../../store";
 import { login } from "../../../store/auth/authSlice";
+import Loader from "../../UI/Loader";
 import "./Login.scss";
 
 type Inputs = {
@@ -9,19 +13,31 @@ type Inputs = {
 };
 
 export default function Login() {
+  const { isLoading, isAuth, error } = useSelector((state: RootState) => {
+    const {
+      auth: { isLoading, isAuth, error },
+    } = state;
+    return { isLoading, isAuth, error };
+  });
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  useEffect(() => {
+    isAuth && history.push("/");
+  }, [isAuth, history]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) =>
+  const onSubmit: SubmitHandler<Inputs> = data =>
     dispatch(login(data.email, data.password));
 
   return (
     <div className="login">
       <h2 className="login-title">Login</h2>
+      {error && <span className="alert">{error}</span>}
       <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="email">Eamil</label>
@@ -58,8 +74,12 @@ export default function Login() {
           )}
         </div>
         <div className="form-btns">
-          <button className="btn btn-primary" type="submit">
-            Login
+          <button
+            disabled={isLoading}
+            className="btn btn-primary"
+            type="submit"
+          >
+            {isLoading ? <Loader /> : "Login"}
           </button>
         </div>
       </form>

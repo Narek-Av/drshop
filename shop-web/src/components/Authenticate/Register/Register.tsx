@@ -1,7 +1,10 @@
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-// import { RootState } from "../../../store";
+import { useHistory, useLocation } from "react-router-dom";
+import { RootState } from "../../../store";
 import { signup } from "../../../store/auth/authSlice";
+import Loader from "../../UI/Loader";
 
 import "./Register.scss";
 
@@ -13,8 +16,18 @@ type Inputs = {
 };
 
 const Register: React.FC = () => {
-  // const {isLoading, isAuth, error} = useSelector<RootState>(state => state.auth);
+  const { isLoading, isAuth, error } = useSelector((state: RootState) => {
+    const {
+      auth: { isLoading, isAuth, error },
+    } = state;
+    return { isLoading, isAuth, error };
+  });
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  useEffect(() => {
+    isAuth && history.push("/");
+  }, [isAuth, history]);
 
   const {
     register,
@@ -27,7 +40,7 @@ const Register: React.FC = () => {
   return (
     <div className="register">
       <h2 className="register-title">Register</h2>
-      {/* {error && <span>{error}</span>} */}
+      {error && <span className="alert">{error}</span>}
       <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="username">Username</label>
@@ -91,8 +104,12 @@ const Register: React.FC = () => {
           )}
         </div>
         <div className="form-btns">
-          <button className="btn btn-primary" type="submit">
-            Sign up
+          <button
+            disabled={isLoading}
+            className="btn btn-primary"
+            type="submit"
+          >
+            {isLoading ? <Loader /> : "Sign up"}
           </button>
         </div>
       </form>

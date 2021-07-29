@@ -10,7 +10,7 @@ export const signin = async (req: Request, res: Response) => {
   try {
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
-      return res.status(404).json({ messag: "User does't exits." });
+      return res.status(404).json({ message: "User does't exits." });
     }
 
     const isPasswordCorrect = await bcrypt.compare(
@@ -19,7 +19,7 @@ export const signin = async (req: Request, res: Response) => {
     );
 
     if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Invalid credentials." });
+      return res.status(404).json({ message: "Invalid credentials." });
     }
 
     const token = jwt.sign(
@@ -38,7 +38,7 @@ export const signup = async (req: Request, res: Response) => {
   const { email, password, confirmPassword, username } = req.body;
 
   if (!username || typeof username !== "string") {
-    return res.status(400).json({ message: "Invalid username" });
+    return res.status(404).json({ message: "Invalid username" });
   }
 
   // Email validation regexp
@@ -47,11 +47,11 @@ export const signup = async (req: Request, res: Response) => {
       String(email)
     )
   ) {
-    return res.status(400).json({ message: "Email is not valid." });
+    return res.status(404).json({ message: "Email is not valid." });
   }
 
   if (!password || typeof password !== "string") {
-    return res.status(400).json({ message: "Invalid password" });
+    return res.status(404).json({ message: "Invalid password" });
   }
 
   if (password.length < 6) {
@@ -64,11 +64,11 @@ export const signup = async (req: Request, res: Response) => {
   try {
     const exitstingUser = await User.findOne({ email });
     if (exitstingUser) {
-      return res.status(409).json({ message: "User doesn't exist." });
+      return res.status(404).json({ message: "User doesn't exist." });
     }
 
     if (password !== confirmPassword) {
-      return res.status(400).json({ message: "Password don't match." });
+      return res.status(404).json({ message: "Password don't match." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);

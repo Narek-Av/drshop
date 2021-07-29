@@ -10,7 +10,7 @@ import auth from "../middleware/auth";
 const router = express.Router();
 
 router.post("/", auth, createProduct);
-router.get("/", auth, getProducts);
-router.get("/:id", auth, getProduct);
+router.get("/", getProducts);
+router.get("/:id", getProduct);
 
 export default router;
