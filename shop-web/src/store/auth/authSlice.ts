@@ -1,18 +1,19 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import api from "../../api";
-import { AppDispatch } from "..";
+import { AppDispatch, AppThunk } from "..";
+import { IUser } from "../../interfaces";
 
 interface LoginState {
   isLoading: boolean;
   isAuth: boolean;
   error: string;
-  userData: {};
+  userData: IUser | undefined;
 }
 
 const initialState: LoginState = {
   isLoading: false,
   isAuth: false,
-  userData: {},
+  userData: undefined,
   error: "",
 };
 
@@ -20,7 +21,7 @@ const authSlice = createSlice({
   name: "login",
   initialState,
   reducers: {
-    loginPending: state => {
+    loginPending: (state) => {
       state.isLoading = true;
       state.error = "";
     },
@@ -33,15 +34,21 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    logoutSuccess: (state) => {
+      state.isLoading = false;
+      state.isAuth = false;
+      state.userData = undefined;
+    },
   },
 });
 
 const { reducer, actions } = authSlice;
 
-export const { loginPending, loginSuccess, loginFail } = actions;
+export const { loginPending, loginSuccess, loginFail, logoutSuccess } = actions;
 
 export const login =
-  (email: string, password: string) => async (dispatch: AppDispatch) => {
+  (email: string, password: string): AppThunk =>
+  async (dispatch: AppDispatch) => {
     dispatch(loginPending());
 
     try {
@@ -66,7 +73,7 @@ export const signup =
     email: string;
     password: string;
     confirmPassword: string;
-  }) =>
+  }): AppThunk =>
   async (dispatch: AppDispatch) => {
     dispatch(loginPending());
     const { username, email, password, confirmPassword } = data;
@@ -87,5 +94,10 @@ export const signup =
       }, 3000);
     }
   };
+
+export const logout = () => async (dispatch: AppDispatch) => {
+  localStorage.removeItem("token");
+  dispatch(logoutSuccess());
+};
 
 export default reducer;

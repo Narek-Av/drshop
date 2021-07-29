@@ -9,3 +9,9 @@ export interface Product {
   description: string;
   price: number;
 }
+
+export interface IUser {
+  username: string;
+  email: string;
+  password: string;
+}

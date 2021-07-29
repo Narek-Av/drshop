@@ -23,7 +23,7 @@ export default function Login() {
   const history = useHistory();
 
   useEffect(() => {
-    isAuth && history.push("/");
+    (isAuth || !!localStorage.getItem("token")) && history.push("/");
   }, [isAuth, history]);
 
   const {
@@ -31,7 +31,7 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = data =>
+  const onSubmit: SubmitHandler<Inputs> = (data) =>
     dispatch(login(data.email, data.password));
 
   return (

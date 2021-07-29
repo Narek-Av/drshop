@@ -5,24 +5,22 @@ import logo from "../../assets/img/shop-logo.png";
 import { ReactComponent as SearchIcon } from "../../assets/icons/loupe.svg";
 
 import "./Navigation.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { logout } from "../../store/auth/authSlice";
+import UserInfo from "./UserInfo";
 
 const Navigation: React.FC = () => {
-  const { userData } = useSelector((state: RootState) => {
-    const {
-      auth: { userData },
-    } = state;
-    return { userData };
-  });
+  const dispatch = useDispatch();
+  const { userData } = useSelector((state: RootState) => state.auth);
 
   return (
     <div className="navigation">
       <div className="navigation-content">
         <div className="navigation-content-left">
-          <div className="app-logo nav-item">
+          <Link to="/" className="app-logo nav-item">
             <img src={logo} alt="logo" />
-          </div>
+          </Link>
           <div className="app-search">
             <label htmlFor="search">
               <SearchIcon />
@@ -32,9 +30,7 @@ const Navigation: React.FC = () => {
         </div>
         <div className="navigation-content-right">
           {userData ? (
-            <>
-              <Link to="/login">Logout</Link>
-            </>
+            <UserInfo logout={() => dispatch(logout())} user={userData} />
           ) : (
             <>
               <Link to="/login" className="btn btn-outline nav-item">

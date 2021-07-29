@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { RootState } from "../../../store";
 import { signup } from "../../../store/auth/authSlice";
 import Loader from "../../UI/Loader";
@@ -26,7 +26,7 @@ const Register: React.FC = () => {
   const history = useHistory();
 
   useEffect(() => {
-    isAuth && history.push("/");
+    (isAuth || !!localStorage.getItem("token")) && history.push("/");
   }, [isAuth, history]);
 
   const {
@@ -35,7 +35,7 @@ const Register: React.FC = () => {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = data => dispatch(signup(data));
+  const onSubmit: SubmitHandler<Inputs> = (data) => dispatch(signup(data));
 
   return (
     <div className="register">
@@ -96,7 +96,7 @@ const Register: React.FC = () => {
             type="password"
             {...register("confirmPassword", {
               required: "Confirm Password is required",
-              validate: value => value === watch("password"),
+              validate: (value) => value === watch("password"),
             })}
           />
           {errors.confirmPassword && (
