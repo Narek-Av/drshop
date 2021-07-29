@@ -16,7 +16,7 @@ const App: React.FC = () => {
         <Navigation />
         <Switch>
           <Route path="/" exact>
-            <Main products={[]} />
+            <Main />
           </Route>
           <Route path="/login">
             <Login />

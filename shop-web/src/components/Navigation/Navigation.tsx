@@ -3,12 +3,15 @@ import { Link } from "react-router-dom";
 
 import logo from "../../assets/img/shop-logo.png";
 import { ReactComponent as SearchIcon } from "../../assets/icons/loupe.svg";
+import { ReactComponent as ShoppingCartIcon } from "../../assets/icons/shopping-cart.svg";
 
 import "./Navigation.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { logout } from "../../store/auth/authSlice";
 import UserInfo from "./UserInfo";
+
+type NavigationProps = {};
 
 const Navigation: React.FC = () => {
   const dispatch = useDispatch();
@@ -41,6 +44,9 @@ const Navigation: React.FC = () => {
               </Link>
             </>
           )}
+          <div className="shopping-cart">
+            <ShoppingCartIcon />
+          </div>
         </div>
       </div>
     </div>

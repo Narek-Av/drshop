@@ -3,10 +3,6 @@ import { Response, Request } from "express";
 import Products from "../models/products";
 
 export const getProducts = async (req: Request, res: Response) => {
-  if (!req.body.userId) {
-    return res.json({ message: "Unauthenticated" });
-  }
-
   try {
     const products = await Products.find()
       .select("id name description price")
@@ -18,10 +14,6 @@ export const getProducts = async (req: Request, res: Response) => {
 };
 
 export const getProduct = async (req: Request, res: Response) => {
-  if (!req.body.userId) {
-    return res.json({ message: "Unauthenticated" });
-  }
-
   try {
     await Products.findById(req.params.id, (err: any, product: any) => {
       if (!product) {

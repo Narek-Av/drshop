@@ -4,7 +4,8 @@ export interface CurrentUser {
   email: string;
 }
 
-export interface Product {
+export interface IProduct {
+  _id: string;
   name: string;
   description: string;
   price: number;
