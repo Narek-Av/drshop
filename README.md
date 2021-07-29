@@ -1,9 +1,9 @@
 # drshop
 
-## Runing Server
-### cd shop-server
-### npm run dev
+## Run Server
+1 cd shop-server
+2 npm run dev
 
-## Runign Web
-### cd shop-web
-### npm start
+## Run Web
+1 cd shop-web
+2 npm start
