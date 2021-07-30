@@ -23,7 +23,7 @@ export default function Login() {
   const history = useHistory();
 
   useEffect(() => {
-    (isAuth || !!localStorage.getItem("token")) && history.push("/");
+    (isAuth || !!localStorage.getItem("authData")) && history.push("/");
   }, [isAuth, history]);
 
   const {

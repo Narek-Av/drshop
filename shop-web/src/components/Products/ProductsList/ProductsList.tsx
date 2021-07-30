@@ -2,6 +2,8 @@ import React from "react";
 import { IProduct } from "../../../interfaces";
 import Product from "./Product/Product";
 
+import "./ProductsList.scss";
+
 type ProductsListType = {
   products: IProduct[];
 };
@@ -9,8 +11,8 @@ type ProductsListType = {
 const ProductsList: React.FC<ProductsListType> = ({ products }) => {
   return (
     <div className="products-list">
-      {products.map((product) => (
-        <Product key={product._id} product={product} />
+      {products.map((product, index) => (
+        <Product key={product._id} product={product} id={index} />
       ))}
     </div>
   );

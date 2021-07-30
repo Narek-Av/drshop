@@ -1,5 +1,5 @@
 import { IProduct } from "../../interfaces";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import api from "../../api";
 import { AppDispatch, AppThunk } from "..";
 
@@ -7,11 +7,13 @@ interface ProductsState {
   isLoading: boolean;
   error: string;
   products: IProduct[] | undefined;
+  totalPages: number | 0;
 }
 
 const initialState: ProductsState = {
   isLoading: false,
   products: undefined,
+  totalPages: 0,
   error: "",
 };
 
@@ -21,11 +23,16 @@ const productsSlice = createSlice({
   reducers: {
     productsPending: (state) => {
       state.isLoading = true;
+      state.products = undefined;
       state.error = "";
     },
-    productsSuccess: (state, action) => {
+    productsSuccess: (
+      state,
+      action: PayloadAction<{ products: IProduct[]; totalPages: number }>
+    ) => {
       state.isLoading = false;
-      state.products = action.payload;
+      state.products = action.payload.products;
+      state.totalPages = action.payload.totalPages;
     },
     productsFail: (state, action) => {
       state.isLoading = false;
@@ -38,16 +45,18 @@ const { reducer, actions } = productsSlice;
 
 export const { productsPending, productsSuccess, productsFail } = actions;
 
-export const getProducts = (): AppThunk => async (dispatch: AppDispatch) => {
-  dispatch(productsPending());
+export const getProducts =
+  (currentPage: number): AppThunk =>
+  async (dispatch: AppDispatch) => {
+    dispatch(productsPending());
 
-  try {
-    const res = await api.get("/products");
-    dispatch(productsSuccess(res.data.products));
-  } catch (error) {
-    dispatch(productsFail("error.response.data.message"));
-  }
-};
+    try {
+      const res = await api.get(`/products?p=${currentPage}`);
+      dispatch(productsSuccess(res.data));
+    } catch (error) {
+      dispatch(productsFail("error.response.data.message"));
+    }
+  };
 
 export const getProduct =
   (id: string): AppThunk =>

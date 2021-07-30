@@ -1,3 +1,5 @@
+@import "../../assets/styles/variables";
+
 .product-cart {
   position: fixed;
   top: 0;
@@ -5,9 +7,39 @@
   width: clamp(320px, 33%, 430px);
   height: 100vh;
   background-color: #fff;
-  transition: all 1s linear;
+  transition: all 0.4s ease-out;
+  padding: 1em 0.7em;
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
 
   &-active {
     right: 0;
+  }
+
+  .btn-close {
+    position: absolute;
+    right: 0.6em;
+    top: 0.5em;
+    padding: 0.17em 0.3em;
+    line-height: 1;
+    background-color: transparent;
+    background-color: #eee;
+    box-shadow: $box-shadow;
+
+    &:hover {
+      background-color: #ccc;
+    }
+    svg {
+      fill: green;
+      width: 28px;
+      height: 28px;
+    }
+  }
+  &-header {
+    text-align: center;
+    h3 {
+      font-size: 21px;
+      margin-top: 0.8em;
+      font-weight: 700;
+    }
   }
 }

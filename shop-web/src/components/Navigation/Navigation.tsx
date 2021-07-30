@@ -10,12 +10,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { logout } from "../../store/auth/authSlice";
 import UserInfo from "./UserInfo";
-
-type NavigationProps = {};
+import { useEffect } from "react";
+import { useState } from "react";
+import { IUser } from "../../interfaces";
+import { onShowCart } from "../../store/app/appSlice";
 
 const Navigation: React.FC = () => {
   const dispatch = useDispatch();
-  const { userData } = useSelector((state: RootState) => state.auth);
+  const { isAuth, authData } = useSelector((state: RootState) => state.auth);
+  const [user, setUser] = useState<IUser>();
+
+  useEffect(() => {
+    const authJson = localStorage.getItem("authData");
+    if (authJson) {
+      setUser(JSON.parse(authJson).result);
+    }
+    if (authData) {
+      setUser(authData);
+    }
+  }, [authData]);
 
   return (
     <div className="navigation">
@@ -32,8 +45,8 @@ const Navigation: React.FC = () => {
           </div>
         </div>
         <div className="navigation-content-right">
-          {userData ? (
-            <UserInfo logout={() => dispatch(logout())} user={userData} />
+          {isAuth || user ? (
+            <UserInfo logout={() => dispatch(logout())} user={user} />
           ) : (
             <>
               <Link to="/login" className="btn btn-outline nav-item">
@@ -44,9 +57,12 @@ const Navigation: React.FC = () => {
               </Link>
             </>
           )}
-          <div className="shopping-cart">
+          <button
+            className="btn btn-shopping"
+            onClick={() => dispatch(onShowCart())}
+          >
             <ShoppingCartIcon />
-          </div>
+          </button>
         </div>
       </div>
     </div>

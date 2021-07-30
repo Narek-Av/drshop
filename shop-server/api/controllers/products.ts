@@ -3,11 +3,19 @@ import { Response, Request } from "express";
 import Products from "../models/products";
 
 export const getProducts = async (req: Request, res: Response) => {
+  const PAGE_SIZE = +process.env.PAGE_SIZE;
+  const page = parseInt(req.query.p.toString() || "0");
+
   try {
-    const products = await Products.find()
+    const total = await Products.countDocuments({});
+    const products = await Products.find({})
+      .limit(PAGE_SIZE)
+      .skip(PAGE_SIZE * (page - 1))
       .select("id name description price")
       .exec();
-    res.status(200).json({ products });
+    res
+      .status(200)
+      .json({ totalPages: Math.ceil(total / PAGE_SIZE), products });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
   }

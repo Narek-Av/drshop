@@ -1,0 +1,35 @@
+@import "../../../assets/styles/variables";
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  width: 70%;
+  margin: 0 auto;
+  margin-top: auto;
+
+  .pagination-link {
+    text-decoration: none;
+    color: #333;
+    display: grid;
+    place-items: center;
+    border-color: $btn-color;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    margin: 0.3em;
+    background-color: #fff;
+
+    &:hover,
+    &-active {
+      background-color: $btn-color;
+      color: #fff;
+    }
+  }
+  &-dot {
+    width: 15px;
+    margin: 0 0.2em;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 0.15em;
+  }
+}

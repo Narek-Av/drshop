@@ -7,13 +7,13 @@ interface LoginState {
   isLoading: boolean;
   isAuth: boolean;
   error: string;
-  userData: IUser | undefined;
+  authData: IUser | undefined;
 }
 
 const initialState: LoginState = {
   isLoading: false,
   isAuth: false,
-  userData: undefined,
+  authData: undefined,
   error: "",
 };
 
@@ -28,7 +28,7 @@ const authSlice = createSlice({
     loginSuccess: (state, action) => {
       state.isLoading = false;
       state.isAuth = true;
-      state.userData = action.payload;
+      state.authData = action.payload;
     },
     loginFail: (state, action) => {
       state.isLoading = false;
@@ -37,7 +37,7 @@ const authSlice = createSlice({
     logoutSuccess: (state) => {
       state.isLoading = false;
       state.isAuth = false;
-      state.userData = undefined;
+      state.authData = undefined;
     },
   },
 });
@@ -57,7 +57,7 @@ export const login =
         password,
       });
       dispatch(loginSuccess(res.data.result));
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("authData", JSON.stringify(res.data));
     } catch (error) {
       dispatch(loginFail(error.response.data.message));
 
@@ -86,7 +86,7 @@ export const signup =
         confirmPassword,
       });
       dispatch(loginSuccess(res.data.result));
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("authData", JSON.stringify(res.data));
     } catch (error) {
       dispatch(loginFail(error.response.data.message));
       setTimeout(() => {
@@ -96,7 +96,7 @@ export const signup =
   };
 
 export const logout = () => async (dispatch: AppDispatch) => {
-  localStorage.removeItem("token");
+  localStorage.removeItem("authData");
   dispatch(logoutSuccess());
 };
 

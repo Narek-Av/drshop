@@ -7,7 +7,7 @@ import { useState } from "react";
 
 type UserInfoProps = {
   logout: () => {};
-  user: IUser;
+  user: IUser | undefined;
 };
 
 const UserInfo: React.FC<UserInfoProps> = ({ logout, user }) => {
@@ -33,7 +33,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ logout, user }) => {
         >
           <ArrowDown />
         </button>
-        {showUserInfo && <div className="user-details">{user.username}</div>}
+        {showUserInfo && <div className="user-details">{user?.username}</div>}
       </div>
     </div>
   );

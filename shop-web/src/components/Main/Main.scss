@@ -1,12 +1,10 @@
 .main {
   background-color: #f9f9f9;
-  height: calc(100vh - 80px);
   padding: 2em;
 
   &-container {
     display: grid;
     grid-template-columns: 28% 70%;
-    height: 100%;
     width: 80%;
     margin: 0 auto;
   }

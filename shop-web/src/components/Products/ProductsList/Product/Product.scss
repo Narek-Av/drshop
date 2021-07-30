@@ -1,2 +1,38 @@
+@import "../../../../assets/styles/variables";
+
 .product-card {
+  height: 280px;
+  width: 100%;
+  border: 1px solid $brd-color;
+  box-shadow: $box-shadow;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+
+  &-btn {
+    padding: 0.6em 0.8em;
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+    .btn-cart {
+      border-color: $btn-color;
+      &:hover {
+        background-color: $btn-color;
+        color: #fff;
+      }
+    }
+  }
+  &-info {
+    padding: 0.5em;
+  }
+  &-img {
+    width: 100%;
+    height: 180px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
