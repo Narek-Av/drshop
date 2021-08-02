@@ -1,6 +1,9 @@
 .products-list {
   display: grid;
-  grid-template-columns: repeat(4, minmax(250px, 320px));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 320px));
+  width: 100%;
+  align-items: center;
+  justify-content: center;
   grid-gap: 1.4em 1.2em;
-  height: 100%;
+  margin-bottom: 0.8em;
 }

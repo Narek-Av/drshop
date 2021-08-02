@@ -10,31 +10,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { logout } from "../../store/auth/authSlice";
 import UserInfo from "./UserInfo";
-import { useEffect } from "react";
-import { useState } from "react";
-import { IUser } from "../../interfaces";
 import { onShowCart } from "../../store/app/appSlice";
 
 const Navigation: React.FC = () => {
   const dispatch = useDispatch();
-  const { isAuth, authData } = useSelector((state: RootState) => state.auth);
-  const [user, setUser] = useState<IUser>();
-
-  useEffect(() => {
-    const authJson = localStorage.getItem("authData");
-    if (authJson) {
-      setUser(JSON.parse(authJson).result);
-    }
-    if (authData) {
-      setUser(authData);
-    }
-  }, [authData]);
+  const { isAuth, user } = useSelector((state: RootState) => state.auth);
 
   return (
     <div className="navigation">
       <div className="navigation-content">
         <div className="navigation-content-left">
-          <Link to="/" className="app-logo nav-item">
+          <Link to="/products" className="app-logo nav-item">
             <img src={logo} alt="logo" />
           </Link>
           <div className="app-search">
@@ -45,7 +31,7 @@ const Navigation: React.FC = () => {
           </div>
         </div>
         <div className="navigation-content-right">
-          {isAuth || user ? (
+          {isAuth ? (
             <UserInfo logout={() => dispatch(logout())} user={user} />
           ) : (
             <>

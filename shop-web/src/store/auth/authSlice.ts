@@ -1,19 +1,21 @@
+import { IUser } from "./../../interfaces/index";
 import { createSlice } from "@reduxjs/toolkit";
 import api from "../../api";
 import { AppDispatch, AppThunk } from "..";
-import { IUser } from "../../interfaces";
 
-interface LoginState {
+interface AuthState {
   isLoading: boolean;
   isAuth: boolean;
   error: string;
-  authData: IUser | undefined;
+  token: string | null;
+  user: IUser | null;
 }
 
-const initialState: LoginState = {
+const initialState: AuthState = {
   isLoading: false,
   isAuth: false,
-  authData: undefined,
+  token: null,
+  user: null,
   error: "",
 };
 
@@ -28,7 +30,8 @@ const authSlice = createSlice({
     loginSuccess: (state, action) => {
       state.isLoading = false;
       state.isAuth = true;
-      state.authData = action.payload;
+      state.token = action.payload.token;
+      state.user = action.payload.user;
     },
     loginFail: (state, action) => {
       state.isLoading = false;
@@ -37,7 +40,8 @@ const authSlice = createSlice({
     logoutSuccess: (state) => {
       state.isLoading = false;
       state.isAuth = false;
-      state.authData = undefined;
+      state.token = null;
+      state.user = null;
     },
   },
 });
@@ -56,8 +60,8 @@ export const login =
         email,
         password,
       });
-      dispatch(loginSuccess(res.data.result));
-      localStorage.setItem("authData", JSON.stringify(res.data));
+      dispatch(loginSuccess(res.data));
+      localStorage.setItem("token", JSON.stringify(res.data.token));
     } catch (error) {
       dispatch(loginFail(error.response.data.message));
 
@@ -85,8 +89,8 @@ export const signup =
         password,
         confirmPassword,
       });
-      dispatch(loginSuccess(res.data.result));
-      localStorage.setItem("authData", JSON.stringify(res.data));
+      dispatch(loginSuccess(res.data));
+      localStorage.setItem("token", JSON.stringify(res.data.token));
     } catch (error) {
       dispatch(loginFail(error.response.data.message));
       setTimeout(() => {
@@ -95,8 +99,30 @@ export const signup =
     }
   };
 
+export const getUser = (token: string) => async (dispatch: AppDispatch) => {
+  dispatch(loginPending());
+
+  try {
+    if (token) {
+      const res = await api.post(
+        "/user/data",
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (res.status === 200) {
+        console.log(`res.data.user`, res.data.user);
+        dispatch(loginSuccess({ user: res.data.user, token }));
+      }
+    }
+  } catch (error) {
+    dispatch(loginFail(error.response.data.message));
+  }
+};
+
 export const logout = () => async (dispatch: AppDispatch) => {
-  localStorage.removeItem("authData");
+  localStorage.removeItem("token");
   dispatch(logoutSuccess());
 };
 

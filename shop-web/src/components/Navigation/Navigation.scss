@@ -2,11 +2,10 @@
 
 .navigation {
   border-bottom: 1px solid gray;
-  height: 80px;
+  box-shadow: $box-shadow;
 
   &-content {
-    box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.3);
-    padding: 0.4em 1.2em;
+    padding: 0.3em 1em;
     display: flex;
     justify-content: space-between;
 

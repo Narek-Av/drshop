@@ -1,13 +1,13 @@
 import React from "react";
-import { IUser } from "../../interfaces";
 
 import { ReactComponent as ArrowDown } from "../../assets/icons/arrow-down.svg";
 import { ReactComponent as UserIcon } from "../../assets/icons/user.svg";
 import { useState } from "react";
+import { IUser } from "../../interfaces";
 
 type UserInfoProps = {
   logout: () => {};
-  user: IUser | undefined;
+  user: IUser | null;
 };
 
 const UserInfo: React.FC<UserInfoProps> = ({ logout, user }) => {

@@ -23,12 +23,16 @@ export const signin = async (req: Request, res: Response) => {
     }
 
     const token = jwt.sign(
-      { email: existingUser.email, id: existingUser._id },
+      {
+        email: existingUser.email,
+        username: existingUser.username,
+        id: existingUser._id,
+      },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRE }
     );
 
-    res.status(200).json({ result: existingUser, token });
+    res.status(200).json({ user: existingUser, token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
   }
@@ -73,19 +77,31 @@ export const signup = async (req: Request, res: Response) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    const result = await User.create({
+    const user = await User.create({
       email,
       password: hashedPassword,
       username,
     });
 
     const token = jwt.sign(
-      { email: result.email, id: result._id },
+      { email: user.email, username: user.username, id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRE }
     );
 
-    res.status(200).json({ result, token });
+    res.status(200).json({ user, token });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+export const getUser = async (req: Request, res: Response) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1] || "";
+    const user = jwt.decode(JSON.parse(token));
+    console.log(`user`, user);
+
+    res.status(200).json({ user });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
   }
