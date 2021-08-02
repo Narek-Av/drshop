@@ -7,10 +7,10 @@
 .loader {
   font-size: 10px;
   position: relative;
-  border-top: 0.3em solid rgba(155, 238, 221, 0.979);
-  border-right: 0.3em solid rgba(155, 238, 221, 0.979);
-  border-bottom: 0.3em solid rgba(155, 238, 221, 0.979);
-  border-left: 0.3em solid rgba(74, 224, 194, 0.979);
+  border-top: 0.3em solid #aaa;
+  border-right: 0.3em solid #aaa;
+  border-bottom: 0.3em solid #aaa;
+  border-left: 0.3em solid rgba(65, 103, 185, 0.979);
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);

@@ -5,7 +5,6 @@ import {
   getProduct,
   createProduct,
 } from "../controllers/products";
-import auth from "../middleware/auth";
 
 const router = express.Router();
 

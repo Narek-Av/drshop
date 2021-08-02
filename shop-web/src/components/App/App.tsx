@@ -1,16 +1,16 @@
-import Products from "../Products";
-import Navigation from "../Navigation/Navigation";
+import { useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
+import Products from "../Products";
+import ProductCart from "../ProductCart";
+import Navigation from "../Navigation/Navigation";
 import Login from "../Authenticate/Login";
 import Register from "../Authenticate/Register";
-
-import "./App.scss";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { getUser } from "../../store/auth/authSlice";
 import AuthRouter from "../AuthRouter";
-import ProductCart from "../ProductCart";
+
+import "./App.scss";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();

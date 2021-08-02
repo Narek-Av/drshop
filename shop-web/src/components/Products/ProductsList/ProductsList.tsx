@@ -1,5 +1,6 @@
 import React from "react";
 import { IProduct } from "../../../interfaces";
+
 import Product from "./Product/Product";
 
 import "./ProductsList.scss";
