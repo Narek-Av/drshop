@@ -13,9 +13,14 @@ export const getProducts = async (req: Request, res: Response) => {
       .skip(PAGE_SIZE * (page - 1))
       .select("id name description price")
       .exec();
+
     res
       .status(200)
-      .json({ totalPages: Math.ceil(total / PAGE_SIZE), products });
+      .json({
+        totalPages: Math.ceil(total / PAGE_SIZE),
+        pageProductCount: products.length,
+        products,
+      });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
   }

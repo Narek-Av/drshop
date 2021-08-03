@@ -10,11 +10,7 @@ const AuthRouter = ({ component, ...rest }: any) => {
     <Route
       {...rest}
       render={(props) =>
-        isAuth ? (
-          <Redirect to="/products" />
-        ) : (
-          React.createElement(component, props)
-        )
+        isAuth ? <Redirect to="/" /> : React.createElement(component, props)
       }
     />
   );

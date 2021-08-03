@@ -1,17 +1,16 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-
+import ProductsHeader from "../../components/Products/ProductsHeader";
+import ProductsList from "../../components/Products/ProductsList";
+import ProductsSidebar from "../../components/Products/ProductsSidebar";
+import Loader from "../../components/UI/Loader";
 import { RootState } from "../../store";
 import { getProducts } from "../../store/products/productsSlice";
-import Loader from "../UI/Loader";
-import Pagination from "../UI/Pagination/Pagination";
 
-import ProductHeader from "./ProductHeader/ProductHeader";
-import ProductsList from "./ProductsList";
-import "./Products.scss";
+import "./Home.scss";
 
-const Products: React.FC = () => {
+const Home: React.FC = () => {
   const { totalPages, products, isLoading, error } = useSelector(
     (state: RootState) => state.products
   );
@@ -29,14 +28,14 @@ const Products: React.FC = () => {
   }, [dispatch, search]);
 
   return (
-    <div className="products-container">
-      {totalPages && <ProductHeader />}
+    <div className="home">
+      <ProductsHeader />
+      <ProductsSidebar />
       {isLoading && <Loader />}
       {error && <p>Error!</p>}
-      {products && <ProductsList products={products} />}
-      {totalPages && <Pagination totalPages={totalPages} />}
+      {products && <ProductsList products={products} totalPages={totalPages} />}
     </div>
   );
 };
 
-export default Products;
+export default Home;

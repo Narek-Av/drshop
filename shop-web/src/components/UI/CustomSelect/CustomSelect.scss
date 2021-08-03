@@ -1,0 +1,57 @@
+@import "../../../assets/styles/variables";
+
+.custom-select {
+  position: relative;
+  border: 1px solid #999;
+
+  &-header {
+    display: flex;
+    background-color: #fff;
+    align-items: center;
+    padding: 0.4em 0.8em;
+
+    svg {
+      width: 11px;
+      height: 11px;
+      margin-left: 10px;
+    }
+  }
+  &-list {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    box-shadow: $box-shadow;
+    height: 100px;
+    transform: translateY(100%);
+    margin: 0;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    user-select: none;
+    pointer-events: none;
+    transition: opacity 0.14s ease-out;
+    list-style-type: none;
+    padding: 0;
+
+    li {
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+.custom-select-active {
+  box-shadow: $box-shadow;
+
+  .custom-select-header {
+    svg {
+      transform: rotate(180deg);
+    }
+  }
+  .custom-select-list {
+    visibility: initial;
+    opacity: 1;
+    user-select: initial;
+    pointer-events: initial;
+  }
+}

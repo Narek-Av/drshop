@@ -6,21 +6,27 @@ import { ReactComponent as SearchIcon } from "../../assets/icons/loupe.svg";
 import { ReactComponent as ShoppingCartIcon } from "../../assets/icons/shopping-cart.svg";
 
 import "./Navigation.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { logout } from "../../store/auth/authSlice";
 import UserInfo from "./UserInfo";
-import { onShowCart } from "../../store/app/appSlice";
+import { IUser } from "../../interfaces";
 
-const Navigation: React.FC = () => {
-  const dispatch = useDispatch();
-  const { isAuth, user } = useSelector((state: RootState) => state.auth);
+interface NavigationProps {
+  logout: () => {};
+  user: IUser | null;
+  isAuth: boolean;
+  showCartHandle: () => void;
+}
 
+const Navigation: React.FC<NavigationProps> = ({
+  logout,
+  user,
+  isAuth,
+  showCartHandle,
+}) => {
   return (
     <div className="navigation">
       <div className="navigation-content">
         <div className="navigation-content-left">
-          <Link to="/products" className="app-logo nav-item">
+          <Link to="/" className="app-logo nav-item">
             <img src={logo} alt="logo" />
           </Link>
           <div className="app-search">
@@ -32,7 +38,7 @@ const Navigation: React.FC = () => {
         </div>
         <div className="navigation-content-right">
           {isAuth ? (
-            <UserInfo logout={() => dispatch(logout())} user={user} />
+            <UserInfo logout={logout} user={user} />
           ) : (
             <>
               <Link to="/login" className="btn btn-outline nav-item">
@@ -43,10 +49,7 @@ const Navigation: React.FC = () => {
               </Link>
             </>
           )}
-          <button
-            className="btn btn-shopping"
-            onClick={() => dispatch(onShowCart())}
-          >
+          <button className="btn btn-shopping" onClick={showCartHandle}>
             <ShoppingCartIcon />
           </button>
         </div>

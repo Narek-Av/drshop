@@ -43,23 +43,20 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages }) => {
       return buttons;
     }
 
-    const start = 2;
     const end = buttons.length - 1;
-    const toRight = end - currentPage > 3;
-    const toLeft = currentPage - start > 0;
     const sliceStart =
-      currentPage === 1 ? 1 : currentPage + 3 > end ? end - 4 : currentPage - 1;
-    const sliceEnd = currentPage + 3 >= end ? end : currentPage + 3;
+      currentPage <= 2 ? 1 : currentPage + 3 > end ? end - 4 : currentPage - 2;
+    const sliceEnd = currentPage + 2 >= end ? end : currentPage + 2;
 
     const slicededButtons = [
       buttons[0],
-      toLeft && (
+      currentPage > 3 && (
         <span className="pagination-dot" key={sliceStart}>
           <MoreIcon />
         </span>
       ),
       buttons.slice(sliceStart, sliceEnd),
-      toRight && (
+      currentPage < buttons.length - 3 && (
         <span className="pagination-dot" key={sliceEnd}>
           <MoreIcon />
         </span>

@@ -1,0 +1,11 @@
+@import "../../../assets/styles/variables";
+
+.products-sidebar {
+  grid-column: 1/2;
+  grid-row: 2/3;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: $box-shadow;
+  border-radius: $brd-radius;
+  align-self: flex-start;
+}

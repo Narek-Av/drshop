@@ -1,0 +1,59 @@
+@import "../../../assets/styles/variables";
+
+.products-header {
+  background-color: #fff;
+  grid-column: 2/3;
+  grid-row: 1/2;
+  margin-bottom: 1em;
+  display: flex;
+  padding: 0.6em 0.8em;
+  box-shadow: $box-shadow;
+  border-radius: $brd-radius;
+}
+
+.products-sort {
+  select {
+    border: none;
+    background-color: #f8f8f8;
+    option {
+      background-color: #f8f8f8;
+      border: none;
+    }
+  }
+}
+
+// .products-filter {
+//   position: relative;
+
+//   &-icon {
+//     display: flex;
+//     align-items: center;
+//     cursor: pointer;
+//     font-size: 18px;
+//     color: $text-color;
+
+//     &:hover {
+//       color: $dark-text-color;
+//       svg {
+//         fill: $dark-text-color;
+//       }
+//     }
+//     svg {
+//       fill: $text-color;
+//       width: 30px;
+//       height: 30px;
+//       margin-right: 8px;
+//     }
+//   }
+
+//   &-list {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     width: 300px;
+//     height: 200px;
+//     background-color: #fff;
+//     box-shadow: $box-shadow;
+//     border-radius: $brd-radius;
+//   }
+// }
