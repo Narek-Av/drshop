@@ -32,7 +32,7 @@ const App: React.FC = () => {
       <Suspense fallback={<Loader />}>
         <Switch>
           <Route path="/" exact component={HomeView} />
-          <Route path="/more" exact component={ShowMoreView} />
+          {/* <Route path="/more" exact component={ShowMoreView} /> */}
           <AuthRouter path="/login" component={Login} />
           <AuthRouter path="/signup" component={Register} />
         </Switch>
