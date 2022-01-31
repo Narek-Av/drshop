@@ -24,6 +24,8 @@ const App: React.FC = () => {
     }
   }, [dispatch]);
 
+  console.log('hello from app');
+
   return (
     <BrowserRouter>
       <PageTopNavigation />
